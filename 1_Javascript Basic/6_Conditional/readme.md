@@ -48,15 +48,15 @@ if(age > 19) {
 switch(x) {
   case 'value1':
     x = "value01";
-    [break]
+    break;
 
   case 'value2':
     x = "value02";
-    [break]
+    break;
 
   default:
     x = "default";
-    [break]
+    break;
 }
 ```
 - if-else문으로 표현한다면 아래와 같다
