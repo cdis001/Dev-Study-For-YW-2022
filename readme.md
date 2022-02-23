@@ -9,5 +9,3 @@
 > https://github.com/microsoft/Web-Dev-For-Beginners
   
 > https://github.com/dinanathsj29/javascript-beginners-tutorial
-
-> https://drive.google.com/file/d/1sqRnaoqu61hRW1xFuMp3duaeTJ8UbBVc/view
