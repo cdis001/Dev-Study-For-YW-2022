@@ -36,7 +36,7 @@ h1, h2 {
     <h1 id="my-id">
     ```
     ```css
-    .my-id {
+    #my-id {
        color: red
     }
     ```
