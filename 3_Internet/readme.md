@@ -180,6 +180,41 @@
    4. 요청 헤더와 비슷한, HTTP 헤더들
    5. 리소스가 포함되는 본문(필수는 아님)
 
+### HTTP 파라미터 전송
+```javascript
+const login = (email, password) => {
+   ... //로그인 로직
+}
+```
+1. GET
+  ```
+  [GET]
+  www.test.com/login?email=user01@test.com&password=123456
+  ```
+  - http 메소드 뒤에 '?'를 붙여 파라미터를 전달
+  - 파라미터 이름, 값을 URL 뒤에 작성
+  - 필요한 파라미터가 2개 이상일 경우, '&'를 이용해 구별
+  - 데이터 길이에 제한이 있음
+  - 단순 조회에 주로 사용
+
+2. POST
+  ```javascript
+   const userInfo = {
+      email: "user01@test.com",
+      password: "123456"
+   }
+
+  const loginResult = fetch("www.test.com/login", {
+     method: "POST",
+     body: JSON.stringify(data),
+  })
+  ```
+  - URL에 직접적으로 표기하지 않고 body에 데이터가 담김 
+  - 사용자에게 데이터가 노출되지 않아 보안에 강함
+  - GET을 제외한 요청(PUT, DELETE...)은 이런 방식으로 데이터 전달
+  
+
+
 ## 5. Hosting
 - 대형 서버의 기능을 빌려쓰는 것
 - PC 서버로 웹사이트를 제공하기 위해서는 24시간동안 컴퓨터를 켜놔야 하는데, 개인 컴퓨터에서는 현실적으로 힘드므로 호스팅 업체가 여러대의 서버 중 일부 공간을 나누어 준 뒤 그 대가를 받는 서비스
@@ -194,3 +229,115 @@
 
 ## 6. 기타 사이트
 > https://d2.naver.com/helloworld/59361
+
+## 7. REST API
+1. 개념
+  - REST란, REpresentational State Transfer 의 약자
+    - 자원을 이름(자원의 표현)으로 구분하여 해당 자원의 상태(정보)를 주고 받는 모든 것을 의미
+
+  - API(Application Programming Interface)란
+    - 데이터와 기능의 집합을 제공하여 컴퓨터 프로그램간 상호작용을 촉진하며, 서로 정보를 교환가능 하도록 하는 것
+
+  - 월드와이드웹과 같은 분산 하이퍼 미디어 시스템에서 운영되는 소프트웨어 아키텍처 스타일
+    - 하이퍼 미디어?
+      - 텍스트·음성·도형·애니메이션 및 비디오 화상 등 복수의 정보를 노드(node)와 링크(link)로 유기적으로 연결한 네트워크(그물망)구조
+
+  - REST API란 REST 기반으로 API를 구현한 것
+
+2. 특징
+  - Uniform (유니폼 인터페이스)
+    - Uniform Interface는 URI로 지정한 리소스에 대한 조작을 통일되고 한정적인 인터페이스로 수행하는 아키텍처 스타일.
+
+  - Stateless (무상태성)
+    - REST는 무상태성 성격을 가짐, 
+    - 다시 말해 작업을 위한 상태정보를 따로 저장하고 관리하지 않음. 
+    - 세션 정보나 쿠키정보를 별도로 저장하고 관리하지 않기 때문에 API 서버는 들어오는 요청만을 단순히 처리하면 됨. 
+    - 때문에 서비스의 자유도가 높아지고 서버에서 불필요한 정보를 관리하지 않음으로써 구현이 단순해짐.
+
+  - Cacheable (캐시 가능)
+    - REST의 가장 큰 특징 중 하나는 HTTP라는 기존 웹표준을 그대로 사용하기 때문에, 웹에서 사용하는 기존 인프라를 그대로 활용이 가능. 
+    - HTTP가 가진 캐싱 기능이 적용 가능 
+    - HTTP 프로토콜 표준에서 사용하는 Last-Modified 태그나 E-Tag를 이용하면 캐싱 구현이 가능합니다.
+
+  - Self-descriptiveness (자체 표현 구조)
+    - REST의 또 다른 큰 특징 중 하나는 REST API 메시지만 보고도 이를 쉽게 이해 할 수 있는 자체 표현 구조로 되어 있음.
+
+  - Client - Server 구조
+    - REST 서버는 API 제공, 클라이언트는 사용자 인증이나 컨텍스트(세션, 로그인 정보)등을 직접 관리하는 구조
+    - 각각의 역할이 확실히 구분되기 때문에 클라이언트와 서버에서 개발해야 할 내용이 명확해지고 서로간 의존성이 줄어들게 됨.
+
+  - 계층형 구조
+    - REST 서버는 다중 계층으로 구성될 수 있으며 보안, 로드 밸런싱, 암호화 계층을 추가해 구조상의 유연성을 둘 수 있음
+    - PROXY, 게이트웨이 같은 네트워크 기반의 중간매체를 사용할 수 있게 합니다.
+
+3. 구성
+  - 자원(Resource) - URL
+    - 모든 자원에 고유한 ID가 존재하고, 이 자원은 Server에 존재한다.
+    - 자원을 구별하는 ID는 /orders/order_id/1 와 같은 HTTP URI 이다.
+
+  - 행위(Verb) - Http Method
+    - HTTP 프로토콜의 Method를 사용한다.
+    - HTTP 프로토콜은 GET, POST, PUT, DELETE와 같은 메서드를 제공한다.
+
+  - 표현(Representations)
+    - Client가 자원의 상태 (정보)에 대한 조작을 요청하면 Server는 이에 적절한 응답 (Representation)을 보낸다
+    - REST에서 하나의 자원은 JSON, XML, TEXT, RSS 등 여러 형태의 Representation으로 나타낼 수 있다.
+    - 현재는 JSON으로 주고 받는 것이 대부분이다.
+      - JSON?
+        - JavaScript Object Notation
+        - 자바스크립트 객체 표기
+
+
+4. 설계 규칙
+  - URI는 정보의 자원을 표현해야 함
+    - resource는 동사보다는 명사를, 대문자보다는 소문자를 사용한다.
+    - resource의 도큐먼트 이름으로는 단수 명사를 사용해야 한다.
+    - resource의 컬렉션 이름으로는 복수 명사를 사용해야 한다.
+    - resource의 스토어 이름으로는 복수 명사를 사용해야 한다.
+      - Ex) GET /Member/1 -> GET /members/1
+
+  - 자원에 대한 행위는 HTTP Method(GET, POST, PUT, DELETE 등)으로 표현
+    - URI에 HTTP Method가 들어가면 안됨
+      - Ex) GET /members/delete/1 -> DELETE /members/1
+    - URI에 행위에 대한 동사 표현이 들어가면 안된다.(즉, CRUD 기능을 나타내는 것은 URI에 사용하지 않는다.)
+      - Ex) GET /members/show/1 -> GET /members/1
+      - Ex) GET /members/insert/2 -> POST /members/2
+    - 경로 부분 중 변하는 부분은 유일한 값으로 대체한다.(즉, :id는 하나의 특정 resource를 나타내는 고유값이다.)
+      - Ex) student를 생성하는 route: POST /students
+      - Ex) id=12인 student를 삭제하는 route: DELETE /students/12
+
+  - 슬래시 구분자(/ )는 계층 관계를 나타내는데 사용한다.
+      - Ex) http://restapi.example.com/houses/apartments
+  - URI 마지막 문자로 슬래시(/ )를 포함하지 않는다.
+  - URI에 포함되는 모든 글자는 리소스의 유일한 식별자로 사용되어야 하며 URI가 다르다는 것은 리소스가 다르다는 것이고, 역으로 리소스가 다르면 URI도 달라져야 한다.
+  - REST API는 분명한 URI를 만들어 통신을 해야 하기 때문에 혼동을 주지 않도록 URI 경로의 마지막에는 슬래시(/)를 사용하지 않는다.
+      - Ex) http://restapi.example.com/houses/apartments/ (X)
+  - 하이픈(- )은 URI 가독성을 높이는데 사용
+  - 불가피하게 긴 URI경로를 사용하게 된다면 하이픈을 사용해 가독성을 높인다.
+  - 밑줄(_ )은 URI에 사용하지 않는다.
+  - 밑줄은 보기 어렵거나 밑줄 때문에 문자가 가려지기도 하므로 가독성을 위해 밑줄은 사용하지 않는다.
+  - URI 경로에는 소문자가 적합하다.
+  - URI 경로에 대문자 사용은 피하도록 한다.
+  - RFC 3986(URI 문법 형식)은 URI 스키마와 호스트를 제외하고는 대소문자를 구별하도록 규정하기 때문
+  - 파일확장자는 URI에 포함하지 않는다.
+  - REST API에서는 메시지 바디 내용의 포맷을 나타내기 위한 파일 확장자를 URI 안에 포함시키지 않는다.
+  - Accept header를 사용한다.
+      - Ex) http://restapi.example.com/members/soccer/345/photo.jpg (X)
+      - Ex) GET / members/soccer/345/photo HTTP/1.1 Host: restapi.example.com Accept: image/jpg (O)
+  - 리소스 간에는 연관 관계가 있는 경우
+  - /리소스명/리소스 ID/관계가 있는 다른 리소스명
+      - Ex) GET : /users/{userid}/devices (일반적으로 소유 ‘has’의 관계를 표현할 때)
+
+5. 실습!
+  ### 네이버 영화 오픈 API와 HTML table을 사용하여 영화 정보 페이지 만들어보기!
+  - 네이버 영화 OPEN API
+     > https://developers.naver.com/docs/search/movie/
+
+  - fetch()로 API 호출
+
+  1. HTML table의 구조
+     1. 제목
+     2. 이미지
+     3. 평점
+
+   
